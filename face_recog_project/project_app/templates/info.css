@@ -1,0 +1,30 @@
+#info-page{
+    margin: 10vh, 2vh;
+    }
+
+
+
+#image{
+margin: 10vh, 0;   
+height: 5vh;
+width: 5vh;
+flex-wrap: wrap;
+}
+
+.container{
+    height: 100vh;
+    background-color: white;
+}
+
+
+#textfield{
+border-radius: 20px;
+
+}
+
+
+
+
+
+
+

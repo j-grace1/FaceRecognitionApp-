@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}  
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"> 
+    <link href="{% static 'custom.css' %}" rel="stylesheet"> 
+    <link href="{% static 'test.css' %}" rel="stylesheet"> 
+    <link href="{% static 'info.css' %}" rel="stylesheet">
+
+
+    <style>
+        .loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+
+
+
+
+
+.lds-spinner {
+  color: official;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-spinner div {
+  transform-origin: 40px 40px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+.lds-spinner div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 37px;
+  width: 6px;
+  height: 18px;
+  border-radius: 20%;
+  background: #fff;
+}
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.loader1 {
+  position: absolute;
+  top: calc(30% - 3px);
+  left: calc(40% - 32px);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  perspective: 800px;
+}
+
+.inner {
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;  
+}
+
+.inner.one {
+  left: 0%;
+  top: 0%;
+  animation: rotate-one 1s linear infinite;
+  border-bottom: 9px solid #3c3c47;
+}
+
+.inner.two {
+  right: 0%;
+  top: 0%;
+  animation: rotate-two 1s linear infinite;
+  border-right: 9px solid #710aa8;
+}
+
+.inner.three {
+  right: 0%;
+  bottom: 0%;
+  animation: rotate-three 1s linear infinite;
+  border-top: 9px solid #1313d6;
+}
+
+@keyframes rotate-one {
+  0% {
+    transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+  }
+}
+
+@keyframes rotate-two {
+  0% {
+    transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+  }
+}
+
+@keyframes rotate-three {
+  0% {
+    transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+  }
+}
+
+
+
+
+    </style>
+
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h4><span><img style="width: 30px; height: 30px;" src=" {% static 'images/face-scan.png' %}" alt="" ></span>  FaceGenuis</h4>
+            </div>
+            <ul class="nav-links">
+                <li class="home"><a  href="../project_app">Home</a></li>
+                <li class="about"><a href="#">About</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <div id="webcam" style="position: absolute;
+    top: calc(65vh);
+     display: flex; align-items:center;">
+        <input title="some" type="checkbox" name="dialog_state" id="dialog_state1" class="dialog_state">
+        <div  id='dialog'>
+          
+          <div id='dlg-wrap'>
+           
+              <div style="justify-content: center; display: flex;"><h3>Please Be Patient!!!</h3></div>
+             
+            
+           
+      
+      
+            <div class="loader1">
+                <div class="inner one"></div>
+                <div class="inner two"></div>
+                <div class="inner three"></div>
+              </div>
+    
+              <div style=" height: 50vh; display: flex; justify-content: center; align-items: center;">
+             
+              </div>
+              <div style="display: flex; justify-content: center; align-items: center;">
+                <h4>Processing Picture ...</h4>
+              </div>
+            
+      
+          
+      </div>
+      </div>
+      </div>
+
+ <div class="container" >
+
+    
+
+    <div id="info-page"  >
+        
+        <div style=" display: flex; justify-content: center; margin-top: 12vh;"><h3>Info About------</h3></div>
+
+        
+            <div style="display: flex; justify-content: center;" ><img  id="image"  style="width:40vh ;height:40vh; margin-top: 8vh;" src="{% static 'images/face-scan.png' %}" alt=""></div>
+    
+        <div class="textinfo" style="  margin-top: 20vh;
+       
+          display: flex; justify-content: center; flex-direction: column; flex-wrap: wrap; "
+          >
+            <div class="row infoelement" style="  display: flex; justify-content: center; margin-bottom: 7vh; display: flex; flex-direction: row; height: 10vh; align-items: center;">
+                <div ></div>
+               <h4 style="width: 40vh;">NAME :</h4>
+                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+            <div ></div>
+            </div>
+            <div class="row infoelement" style="  display: flex; justify-content: center; margin-bottom: 7vh;  display: flex; flex-direction: row; height: 10vh; align-items: center;">
+                <h4  style="width: 40vh;">SCHOOL :</h4>
+                <div  id="textfield"  style=" background-color: rgb(196, 195, 195);; height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+            </div>
+            <div class="row infoelement" style=" display: flex; justify-content: center; margin-bottom: 7vh; display: flex; flex-direction: row; height: 10vh; align-items: center;">
+                <h4  style="width: 40vh;">DEPARTMENT :</h4>
+                <div  id="textfield"  style="background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+            </div>
+            <div class="row infoelement" style=" display: flex; justify-content: center; margin-bottom: 7vh; display: flex; flex-direction: row; height: 10vh; align-items: center;">
+                <h4  style="width: 40vh;">EMAIL :</h4>
+                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+            </div>
+            <div class="row infoelement" style=" display: flex; justify-content: center; margin-bottom: 7vh; display: flex; flex-direction: row; height: 10vh; align-items: center;">
+                <h4  style="width: 40vh;">ADDRESS :</h4>
+                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+            </div>
+            <div class="row infoelement" style=" display: flex; justify-content: center; margin-bottom: 7vh; display: flex; flex-direction: row; height: 10vh; align-items: center;">
+                <h4  style="width: 40vh;">CONTACT :</h4>
+                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+            </div>
+            
+
+        </div>
+    </div>
+ </div>
+ 
+
+ 
+  
+
+ <div  style="display: none;">
+    <label id="webcambtn" class="button-33" for="dialog_state1" >WebCam Capture</label>
+  </div>
+
+
+
+
+
+ 
+
+
+
+
+
+<script src="{% static 'bootstrap.min.js' %}"></script>
+<script>
+    function navSlide() {
+    const burger = document.querySelector(".burger");
+    const nav = document.querySelector(".nav-links");
+    const navLinks = document.querySelectorAll(".nav-links li");
+    
+    burger.addEventListener("click", () => {
+        //Toggle Nav
+        nav.classList.toggle("nav-active");
+        
+        //Animate Links
+        navLinks.forEach((link, index) => {
+            if (link.style.animation) {
+                link.style.animation = ""
+            } else {
+                link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.5}s`;
+            }
+        });
+        //Burger Animation
+        burger.classList.toggle("toggle");
+    });
+    
+}
+
+navSlide();
+
+
+
+
+$(function(){
+  $(document).keypress(function(e) {
+    cwrite(e.which,'Keypress event');
+    if(e.which==120) custom_dialog_toggle('Keypress x','You opened this window by pressing x');
+  });
+});
+
+
+
+//webcam
+function custom_dialog_toggle(title,text,buttons) {
+  if(typeof title !=='undefined') $('#dlg-header').html(title);
+  if(typeof text !=='undefined') $('#dlg-content').html(text);
+  cwrite('Current state: '+$('#dialog_state1').prop("checked"),'custom_dialog_toggle');
+  $('#dialog_state1').prop("checked", !$('#dialog_state1').prop("checked"));
+}
+
+
+// Console logging function for debugging
+// cwrite(str, title)
+//      str:              string to be appended to console
+//      title (optional): title of the string
+// (c)  Tuomas Hatakka 2015
+//      http://tuomashatakka.fi
+function cwrite(str,title) {
+  var ce = $('#console');
+  var sg = "<p>";
+  if(typeof title !=='undefined') sg = sg+"<em>"+title+"</em> ";
+  sg = sg+str+"</p>";
+  ce.prepend(sg);
+  //if(ce.children("p").length>6) ce.children("p").first().remove();
+}
+</script>
+
+<script type="text/javascript">
+    document.getElementById("webcambtn").click();
+   
+function myMessage() {
+    document.getElementById("webcambtn").click();
+}
+setTimeout(myMessage, 10000);
+    
+  
+    </script>
+
+</body>
+</html>

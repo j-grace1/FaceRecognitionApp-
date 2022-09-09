@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}  
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"> 
+    <link href="{% static 'input.css' %}" rel="stylesheet"> 
+    <link href="{% static 'test.css' %}" rel="stylesheet"> 
+    <link href="{% static 'info.css' %}" rel="stylesheet"> 
+    <link href="{% static 'custom.css' %}" rel="stylesheet"> 
+
+    <style>
+      
+      .dropup {
+        position: relative;
+        display: inline-block;
+      }
+      
+      .dropup-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        bottom: 50px;
+        z-index: 1;
+        margin-bottom: 2vh;
+        padding: 4vh, 0;
+      }
+      
+      .dropup-content a {
+        
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      
+      .dropup-content a:hover {background-color: #ccc}
+      
+      .dropup:hover .dropup-content {
+        display: block;
+      }
+      </style>
+    
+    <title>Document</title>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <h4><span><img style="width: 30px; height: 30px;" src=" {% static 'images/face-scan.png' %}" alt="" ></span>  FaceGenuis</h4>
+        </div>
+        <ul class="nav-links">
+            <li class="home"><a  href="../project_app">Home</a></li>
+            <li class="about"><a href="#">About</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+  
+<div class="container-fluid">
+
+  <div class="welcome">
+    <h1> FACEGENUIS <span>Got Your Back</span></h1>
+    <div class='console-container'><span id='text'></span><div class='console-underscore' id='console'>&#95;</div></div>
+   </div>
+  <div choose-btn>
+    <label id="upload" class="button-33" for="dialog_state">Upload</label>
+    <label id="webcambtn" class="button-33" for="dialog_state1" >WebCam Capture</label>
+  </div>
+
+ 
+<div >
+  <input type="checkbox" name="dialog_state" id="dialog_state" class="dialog_state">
+  <div id='dialog'>
+  
+    {% block content %}      
+    <form method="post" enctype="multipart/form-data">
+    <div id='dlg-wrap'>
+
+          <form action="/delete_book/" method="POST">
+            {% csrf_token %}
+          <label type="submit" value="Delete" id="dlg-close" for="dialog_state"><a href="image_request"> <img style="justify-content: right; display: flex; width: 5vh; height: 5vh;" src="{% static 'images/close.png' %}" alt=""></a></label>
+        </form>
+       
+      
+     
+     
+        {% if img_obj %}
+
+        <script type="text/javascript">
+          document.getElementById("upload").click();
+        
+          </script>
+ 
+       <h5 style="justify-content: center; display: flex;">Succesfully uploaded : {{img_obj.image}}</h5> 
+       
+    
+      
+        <div style="padding-bottom: 10vh ;  justify-content: center; display: flex;"><img style=" width:40vh ;height:40vh;" src="{{ img_obj.image.url}}" alt="Image Will Appear Here"></div>
+    
+
+      {% else %}
+      
+        <div   style=" padding-bottom: 15vh ; justify-content: center; display: flex;"><img  style="width:40vh ;height:40vh; " src="{% static 'images/face-scan.png' %}" alt="Image Will Appear Here"></div>
+  
+          
+      {% endif %}  
+     
+     
+   
+
+
+
+      <div id='dlg-prompt' class="row  "  >
+        <div class='col-lg-4'><i></i></div>
+        <div class="dropup col-lg-2">
+          <button     class=' btn button dropbtn ' ></i>Select File</button>
+          <div class="dropup-content">
+            <a href="#">   
+              {% csrf_token %}  
+              {{ form.image }}  
+         </a>
+           
+          </div>
+        </div>
+     
+
+        <div class="dropup col-lg-2">
+          <button class='btn button dropbtn '></i>Select Folder</button>   
+          <div class="dropup-content">
+            <form action="upload/" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input title="folder" type="file" name="images" webkitdirectory  multiple>
+              <button  type="submit" >Upload</button>
+          </form>
+          </div>
+        </div>
+        
+         
+        <div class='col-lg-4'><i></i></div>
+    </div>
+    <div class="row  "  >
+      <div class='col-sm-4'><i></i></div>
+      <button type="submit" class='col-sm-4 button positive'  style="margin-bottom: 2vh ;">PREVIEW</button>
+      <div class='col-sm-4'><i></i></div>
+    </div>
+    <div class="row  "  >
+      <div class='col-sm-4'><i></i></div>
+      <a  href="Info_page" type="submit" class='col-sm-4 button positive' style="display:flex; justify-content: center;">SUBMIT</a>
+      <div class='col-sm-4'><i></i></div>
+    </div>
+    </div>
+  </form> 
+ 
+     
+
+
+  </div>
+</div>
+
+
+   
+<form method="POST" action="image_web/" name="inputForm" enctype='multipart/form-data'>
+  {% csrf_token %}
+ 
+<div id="webcam"  style="position: absolute;
+top: calc(65vh); right: 0vw;
+ display: flex; align-items:center;">
+  <input type="checkbox" name="dialog_state" id="dialog_state1" class="dialog_state">
+  <div  id='dialog'>
+    
+    <div id='dlg-wrap' >
+   
+      
+        <div ><label id="dlg-close" for="dialog_state1"><img style = " justify-content: end; display: flex; width: 5vh; height: 5vh;" src="{% static 'images/close.png' %}" alt=""></label></div>
+    
+
+      <div style="justify-content: center; display: flex; margin-top: -5vh;"><h3>Just One Click Away</h3></div>
+      <div class="contentarea" style="">
+        <div class="camera">
+            <video id="video">Video stream not available.</video>
+        </div>
+        <div ><img id="startbutton" src="{% static 'images/capture1.png' %} " alt=""></div>
+        
+        <canvas id="canvas"></canvas>
+        <div class="output">
+            <img  id="photo" alt="The screen capture will appear in this box."> 
+        </div>
+        <input id="webimg" value="" name="src" type="text" style="display: none;">
+      </div>
+
+
+      <button type="submit" class="button" id="submit">Submit</button>
+      <input id="id_hidden_image_field" type="text" name="Url" style="display: none;">
+     
+    <div class="row  "  >
+      <div class='col-sm-4'><i></i></div>
+      <a  href="Info_page" type="submit" class='col-sm-4 button positive' style="display:flex; justify-content: center;">SUBMIT</a>
+      <div class='col-sm-4'><i></i></div>
+    </div>
+    </div>
+  </div>
+</div>
+
+
+</form>
+
+{% endblock content %}  
+
+<!-- 
+  Uplaod folder script
+-->
+<script>
+  files = document.querySelector("#file_input").files;
+  document.querySelector("#file_input").addEventListener("change", function() {
+    files = document.querySelector("#file_input").files;
+    var directories = {}
+    for (var file of files) {
+      file.webkitRelativePath
+      directories[file.name] = file.webkitRelativePath
+    }
+    directories = JSON.stringify(directories);
+    document.querySelector("#directories").value = directories
+  });
+  </script>
+
+
+<script>
+
+  
+  /* JS comes here */
+  (function() {
+   
+   
+
+ 
+ var width = 320; // We will scale the photo width to this
+ var height = 0; // This will be computed based on the input stream
+ 
+ var streaming = false;
+ 
+ var video = null;
+ var canvas = null;
+ var photo = null;
+ var startbutton = null;
+ var webcambtn = null;
+ 
+ function startup() {
+     video = document.getElementById('video');
+     canvas = document.getElementById('canvas');
+     photo = document.getElementById('photo');
+     startbutton = document.getElementById('startbutton');
+     webcambtn = document.getElementById('webcambtn')
+ 
+     navigator.mediaDevices.getUserMedia({
+             video: true,
+             audio: false
+         })
+         .then(function(stream) {
+          video.srcObject = stream;
+             video.play();
+         })
+         .catch(function(err) {
+             console.log("An error occurred: " + err);
+         });
+ 
+     video.addEventListener('canplay', function(ev) {
+         if (!streaming) {
+             height = video.videoHeight / (video.videoWidth / width);
+ 
+             if (isNaN(height)) {
+                 height = width / (4 / 3);
+             }
+ 
+             video.setAttribute('width', width);
+             video.setAttribute('height', height);
+             canvas.setAttribute('width', width);
+             canvas.setAttribute('height', height);
+             streaming = true;
+         }
+     }, false);
+ 
+     startbutton.addEventListener('click', function(ev) {
+         takepicture();
+         ev.preventDefault();
+     }, false);
+     
+ 
+     clearphoto();
+ }
+ 
+ 
+ function clearphoto() {
+     var context = canvas.getContext('2d');
+     context.fillStyle = "#AAA";
+     context.fillRect(0, 0, canvas.width, canvas.height);
+ 
+     var data = canvas.toDataURL('image/png');
+     photo.setAttribute('src', data);
+     document.getElementById('id_hidden_image_field').value = data;
+ }
+ 
+ function takepicture() {
+     var context = canvas.getContext('2d');
+     if (width && height) {
+         canvas.width = width;
+         canvas.height = height;
+         context.drawImage(video, 0, 0, width, height);
+ 
+         var data = canvas.toDataURL('image/png');
+         photo.setAttribute('src', data);
+     } else {
+         clearphoto();
+     }
+ }
+ window.addEventListener('load', startup, false);
+ 
+
+ 
+ })();
+
+ 
+ </script>
+ 
+ 
+ 
+<script src="{% static 'bootstrap.min.js' %}"></script>
+<script src="{% static 'custom.js' %}"></script>
+</body>
+</html>
