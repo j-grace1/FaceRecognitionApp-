@@ -1,4 +1,4 @@
-# django
+# Django FaceReconition App
 
 FaceRecognition Web APP
 
