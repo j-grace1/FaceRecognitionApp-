@@ -252,11 +252,13 @@
     
 
     <div id="info-page"  >
+        {% if id == 9 %}
+        <div style=" display: flex; justify-content: center; margin-top: 12vh;"><h3>Sorry This Person is Not recorded In Our DataBase</h3></div>
+        {% else %}
+        <div style=" display: flex; justify-content: center; margin-top: 12vh;"><h3>Info About {{image_name}}</h3></div>
+        {% endif %}
         
-        <div style=" display: flex; justify-content: center; margin-top: 12vh;"><h3>Info About------</h3></div>
-
-        
-            <div style="display: flex; justify-content: center;" ><img  id="image"  style="width:40vh ;height:40vh; margin-top: 8vh;" src="{% static 'images/face-scan.png' %}" alt=""></div>
+            <div style="display: flex; justify-content: center;" ><img  id="image"  style="width:40vh ;height:40vh; margin-top: 8vh;" src="{{ Person.Photo.url}}" alt=""></div>
     
         <div class="textinfo" style="  margin-top: 20vh;
        
@@ -265,28 +267,33 @@
             <div class="row infoelement" style="  display: flex; justify-content: center; margin-bottom: 7vh; display: flex; flex-direction: row; height: 10vh; align-items: center;">
                 <div ></div>
                <h4 style="width: 40vh;">NAME :</h4>
-                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">{{ Person.Name}}</h4></div>
             <div ></div>
             </div>
             <div class="row infoelement" style="  display: flex; justify-content: center; margin-bottom: 7vh;  display: flex; flex-direction: row; height: 10vh; align-items: center;">
                 <h4  style="width: 40vh;">SCHOOL :</h4>
-                <div  id="textfield"  style=" background-color: rgb(196, 195, 195);; height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+                <div  id="textfield"  style=" background-color: rgb(196, 195, 195);; height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;">
+                  <h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">{{ Person.School}}</h4></div>
             </div>
             <div class="row infoelement" style=" display: flex; justify-content: center; margin-bottom: 7vh; display: flex; flex-direction: row; height: 10vh; align-items: center;">
                 <h4  style="width: 40vh;">DEPARTMENT :</h4>
-                <div  id="textfield"  style="background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+                <div  id="textfield"  style="background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;">
+                  <h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">{{ Person.Department}}</h4></div>
             </div>
             <div class="row infoelement" style=" display: flex; justify-content: center; margin-bottom: 7vh; display: flex; flex-direction: row; height: 10vh; align-items: center;">
                 <h4  style="width: 40vh;">EMAIL :</h4>
-                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;">
+                  <h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">{{ Person.Email}}</h4></div>
             </div>
             <div class="row infoelement" style=" display: flex; justify-content: center; margin-bottom: 7vh; display: flex; flex-direction: row; height: 10vh; align-items: center;">
                 <h4  style="width: 40vh;">ADDRESS :</h4>
-                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;">
+                  <h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">{{ Person.Address}}</h4></div>
             </div>
             <div class="row infoelement" style=" display: flex; justify-content: center; margin-bottom: 7vh; display: flex; flex-direction: row; height: 10vh; align-items: center;">
                 <h4  style="width: 40vh;">CONTACT :</h4>
-                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;"><h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">something here</h4></div>
+                <div  id="textfield"  style=" background-color: rgb(196, 195, 195); height: 10vh;  width: 50vw; display: flex; align-items: center;  border: 1px solid #000;">
+                  <h4 style="text-transform: capitalize;  font-weight: normal; padding-left: 4vw;">{{ Person.Contact}}</h4></div>
             </div>
             
 
@@ -302,7 +309,11 @@
     <label id="webcambtn" class="button-33" for="dialog_state1" >WebCam Capture</label>
   </div>
 
-
+<div>
+  <h1>Download File using Django</h1>
+   <a href="download_file">Download PDF</a>
+   <a href="download_file">Download PDF</a>
+</div>
 
 
 
