@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"> 
+    <link href="{% static 'custom.css' %}" rel="stylesheet"> 
+    <link href="{% static 'test.css' %}" rel="stylesheet"> 
+    <link href="{% static 'info.css' %}" rel="stylesheet">
+
+    <title>Multiple_Info</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h4><span><img style="width: 30px; height: 30px;" src=" {% static 'images/face-scan.png' %}" alt="" ></span>  FaceGenuis</h4>
+            </div>
+            <ul class="nav-links">
+                <li class="home"><a  href="../project_app">Home</a></li>
+                <li class="about"><a href="#">About</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div style="display: flex;  flex-direction: column; justify-content: center; align-items: center; padding-top:8% ; padding-bottom: 3vh;">
+        <div style="font-size: 4vh;">Multiple Images Uploaded</div>
+        <div style="font-size: 3vh;">Select which Image you need info About</div>
+
+    </div>
+    {% for names in image_name %}
+    <div >
+        <div style="display: flex;  flex-direction: column; justify-content: center; align-items: center;  padding-top:2vh; padding-bottom:1vh;">
+            <a href="#" style="font-size: 3vh;">{{names}}</a>
+        </div>
+    </div>
+    {% endfor %}
+    
+
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import Info_page, image_request,download_file 
+from .views import Info_page, image_request,download_file, multiple_image_view
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -13,4 +13,5 @@ urlpatterns = [
     path('Info_page', views.Info_page, name = "Info_page"), 
      path('upload/', views.upload, name="upload"),
      path('download_file', views.download_file, name= "download_file"),
+     path('multiple_image_view', views.multiple_image_view, name= "multiple_image_view"),
 ]

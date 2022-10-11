@@ -251,10 +251,10 @@ def empty_folder(folder_name):
 
 
 
-def Info_page(request):
+def Info_page(request, id):
     empty_folder('download')
     #calling face_recog_file to get id of recognized person
-    id = recognize()
+    id = int(id)
     x = 0
     while x<6 :
         print(id)
@@ -358,4 +358,32 @@ def download_file(request):
     response['Content-Disposition'] = "attachment; filename=%s" % filename
     # Return the response value
     return response
-    
+
+def multiple_image_view(request):
+    id_list = recognize()
+    if len(id_list) == 1:
+        Info_page(request, id_list[0])
+    elif len(id_list) > 1:
+        
+        
+        Info_page(request, id_list[0])
+        ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        #store name of all objects of Person class in a list
+        person_object = []
+        persons = Person.objects.all()
+        for obj in persons:
+            print(obj)
+            person_object.append(obj)
+        print(person_object)
+        detected_persons = []
+        corected_names = []
+       
+        for id in id_list:
+            detected_persons.append(person_object[id])
+        #get photo name
+            photo_name = person_object[id].Photo.name
+        #take away folder name
+            split_names = photo_name.split('/')
+            corected_names.append(split_names[1])
+
+        return render(request, 'multiple_image_view.html', {'image_name': corected_names})

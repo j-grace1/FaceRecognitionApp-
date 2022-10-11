@@ -3,6 +3,8 @@ from keras.models import load_model
 from PIL import Image, ImageOps
 import numpy as np
 import random
+import os
+from os import listdir
 
 
 
@@ -27,6 +29,17 @@ def recognize():
 # determined by the first position in the shape tuple, in this case 1.
     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 # Replace this with the path to your image
+
+    image_list = []
+    folder_dir = "./project_app/templates/static/images"
+    for images in os.listdir(folder_dir):
+ 
+    # check if the image ends with png
+        ext = ['bmp', 'pbm', 'pgm', 'ppm', 'sr', 'ras', 'jpeg', 'jpg', 'jpe', 'jp2', 'tiff', 'tif', 'png']
+        for i in ext:
+            if (images.endswith(i)):
+                image_list.append(images)
+                print(images)
     image = Image.open('./project_app/me.jpg')
 
 
@@ -55,11 +68,14 @@ def recognize():
     confidence_score =prediction
 
 
-    
+    id_list = []
     if(int(confidence_score[0][0]) < 0.80):
+
         
-        rand_idx = random.randint(0, 9)
-        return rand_idx
+        for i in range(0, len(image_list)):
+            rand_idx = random.randint(0, 9)
+            id_list.append(rand_idx)
+        return id_list
     else:
         return(7)
 
