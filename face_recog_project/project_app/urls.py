@@ -14,4 +14,5 @@ urlpatterns = [
      path('upload/', views.upload, name="upload"),
      path('download_file', views.download_file, name= "download_file"),
      path('multiple_image_view', views.multiple_image_view, name= "multiple_image_view"),
+      path("register", views.register_request, name="register"),
 ]
