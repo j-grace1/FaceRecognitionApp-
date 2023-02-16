@@ -1,33 +1,52 @@
 from fpdf import FPDF
-import imp
-from unicodedata import name
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.template import loader
-from project_app.forms import UserImageForm , web_photo,UrlForm
-from .face_recog_file import recognize
-from .models import Person, UploadImage, WebImage, MultipleImage, GetUrl, Download
-from django.http import JsonResponse
-from django.template.loader import render_to_string
-from django.shortcuts import get_object_or_404
-from .forms import NewUserForm
-from django.contrib import messages
-from django.contrib.auth import login
-import re
 import base64
-from django.urls import reverse_lazy 
-import os, shutil
-from django.conf import settings
+import cv2
+import os
+import shutil
+import re
+import mimetypes
+import PyPDF2
+import io
+from io import BytesIO
+from urllib.request import urlopen
+from unicodedata import name
+
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse
+from django.template import loader
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib import messages
 from django.core.files import File
 from django.core.files.base import ContentFile
 from django.core.files.temp import NamedTemporaryFile
-from urllib.request import urlopen
-from io import BytesIO
-import PIL.Image as Image
-import io
-import cv2
+from django.conf import settings
+from django.db import IntegrityError
+from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.generic import TemplateView
+from allauth.socialaccount.models import SocialApp
+from allauth.socialaccount.templatetags.socialaccount import get_providers
+
+from PIL import Image
 from imageio import imread
-import mimetypes, PyPDF2
+
+from project_app.forms import UserImageForm, web_photo, UrlForm, NewUserForm, UserRegistrationForm, SignUpForm
+from project_app.models import Person, UploadImage, WebImage, MultipleImage, GetUrl, Download
+from project_app.face_recog_file import recognize
+from project_app.tokens import account_activation_token
+
+
 
 
 
@@ -37,6 +56,9 @@ def index(request):
     template = loader.get_template('myfirst.html')
     return HttpResponse(template.render())
 
+
+def about_view(request):
+	return render(request, 'about.html')
 
 def image_request(request):  
     if request.method == 'POST':  
@@ -129,7 +151,7 @@ def image_web(request):
 
 
             # Getting the current instance object to display in the template  
-            img_object = form.instance  
+            img_object = form.instance 
               
             return render(request, 'Info_page.html', {'form': form, 'img_obj': img_object})  
     else:  
@@ -254,10 +276,12 @@ def empty_folder(folder_name):
 
 
 
-def Info_page(request, id):
+def Info_page(request):
+    id = 7
     empty_folder('download')
     #calling face_recog_file to get id of recognized person
     id = int(id)
+
     x = 0
     while x<6 :
         print(id)
@@ -338,10 +362,6 @@ def Info_page(request, id):
     return render(request, 'Info_page.html', {'Person': detected_person, 'image_name': corected_name, 'id': id, 'pdf': pdf})
 
 
-
-
-
-
 def download_file(request):
     # Define Django project base directory
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -392,14 +412,129 @@ def multiple_image_view(request):
         return render(request, 'multiple_image_view.html', {'image_name': corected_names})
 
 
-def register_request(request):
-	if request.method == "POST":
-		form = NewUserForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			login(request, user)
-			messages.success(request, "Registration successful." )
-			return redirect("index")
-		messages.error(request, "Unsuccessful registration. Invalid information.")
-	form = NewUserForm()
-	return render (request=request, template_name="register.html", context={"register_form":form})
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            messages.success(request, f'Your account has been created. You can log in now!')    
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+
+    context = {'form': form}
+    return render(request, '/register.html', context)
+
+
+
+def send_activation_email(user):
+    uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+    token = account_activation_token.make_token(user)
+    activation_url = reverse('activate', kwargs={'uidb64': uidb64, 'token': token})
+    
+    subject = 'Please Activate Your Account'
+    message = f'Hi {user.username},\n\nPlease click the following link to confirm your registration:\n\n{activation_url}'
+    from_email = 'webmaster@localhost'
+    to_email = user.email
+    send_mail(subject, message, from_email, [to_email])
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    # checking if the user exists, if the token is valid.
+    if user is not None and account_activation_token.check_token(user, token):
+        # if valid set active true 
+        user.is_active = True
+        # set signup_confirmation true
+        user.profile.signup_confirmation = True
+        user.save()
+        login(request, user)
+        return redirect('index')
+    else:
+        return render(request, 'activation_invalid.html')
+
+def signup_view(request):
+    if request.method  == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()
+            user.profile.first_name = form.cleaned_data.get('first_name')
+            user.profile.last_name = form.cleaned_data.get('last_name')
+            user.profile.email = form.cleaned_data.get('email')
+            # user can't login until link confirmed
+            user.is_active = False
+            user.save()
+            current_site = get_current_site(request)
+            subject = 'Please Activate Your Account'
+            # load a template like get_template() 
+            # and calls its render() method immediately.
+            message = render_to_string('activation_request.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                # method will generate a hash value with user related data
+                'token': account_activation_token.make_token(user),
+            })
+            user.email_user(subject, message)
+            return render(request, 'activation_sent.html')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
+
+def activation_sent_view(request):
+    return render(request, 'activation_sent.html')
+
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+
+        providers = get_providers()
+        # Get Google provider object
+        google_provider = None
+        for provider in providers:
+            if provider.id == 'google':
+                google_provider = provider
+
+    # Get the Google app ID and key from SocialApp model
+        if google_provider:
+            google_app = SocialApp.objects.get(provider='google')
+            google_app_id = google_app.client_id
+            google_app_key = google_app.secret
+        return render(request, 'myfirst.html', {
+        'google_app_id': google_app_id,
+        'google_app_key': google_app_key
+        })
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+            messages.error(request, 'Invalid username or password.')
+    return render(request, 'login.html')
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect('index')
+
+
+class MyPasswordResetView(PasswordResetView):
+    email_template_name = 'registration/password_reset_email.html'
+    success_url = reverse_lazy('password_reset_done')
+
+class MyPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'registration/password_reset_done.html'
+
+class MyPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'registration/password_reset_confirm.html'
+    success_url = reverse_lazy('password_reset_complete')
+
+class MyPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'registration/password_reset_complete.html'

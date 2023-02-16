@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logout</title>
+    <style>
+        /* CSS styles */
+        body {
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #666;
+        }
+        button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <h4><span><img style="width: 30px; height: 30px;" src=" {% static 'images/face-scan.png' %}" alt="" ></span> Face<span>G</span>enuis</h4>
+        </div>
+        <ul class="nav-links">
+            <li class="home"><a href=" ">Home</a></li>
+            <li class="about"><a href="#">About</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+      </nav>
+
+    <h1>Logout</h1>
+    <p>Are you sure you want to logout?</p>
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+
+    <script>
+        // JavaScript code
+        function confirmLogout() {
+            var confirmed = confirm("Are you sure you want to logout?");
+            if (confirmed) {
+                // submit the logout form
+                document.querySelector("form").submit();
+            }
+        }
+        // add event listener to the logout button
+        var logoutButton = document.querySelector("button");
+        logoutButton.addEventListener("click", confirmLogout);
+    </script>
+
+       <!-- Include all compiled plugins (below), or include individual files as needed -->
+       <script src="{% static 'bootstrap.min.js' %}"></script>
+       <script src="{% static 'custom.js' %}"></script>
+       
+</body>
+</html>

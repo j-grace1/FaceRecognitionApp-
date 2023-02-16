@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    {% autoescape off %}
+    Hi {{ user.username }},
+    
+    Please click the following link to confirm your registration:
+    
+    http://{{ domain }}{'activate/<slug:uidb64>/<slug:token>/'}
+    {% endautoescape %}
+    
+
+
+</body>
+</html>

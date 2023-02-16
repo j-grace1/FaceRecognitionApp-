@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Login Page</title>
+
+  {% load static %}  
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Psoppins%26display=swap" rel="stylesheet">
+    <link href="{% static 'custom.css' %}" rel="stylesheet"> 
+
+  <style>
+      body {
+          background-color: #f2f2f2;
+          font-family: Arial, sans-serif;
+          margin: 0;
+          margin-top: 10vh;
+          padding: 0;
+      }
+  
+      .login{
+          color: #333;
+          font-size: 18px;
+          text-align: center;
+          margin: 25px 0;
+          text-shadow: 2px 2px #eee;
+          animation: fadeIn 1s ease-in;
+          text-align: center;
+      }
+  
+      h2 {
+          color: #333;
+          font-size: 20px;
+          text-align: center;
+          margin: 25px 0;
+          text-shadow: 2px 2px #eee;
+          animation: fadeIn 1s ease-in;
+      }
+  
+      form {
+          width: 50%;
+        
+          margin: 0 auto;
+         
+          padding: 200px 100px;
+          background-color: #fff;
+          border: 2px solid #ddd;
+          box-shadow: 2px 2px 10px #ddd;
+          animation: fadeIn 1s ease-in;
+      }
+  
+      input[type=text], input[type=email], input[type=password] {
+          width: 100%;
+          padding: 10px;
+          margin: 10px 0;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          box-sizing: border-box;
+          font-size: 16px;
+      }
+  
+      button[type=submit] {
+          background-color: #333;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          padding: 10px 20px;
+          margin-top: 20px;
+          font-size: 16px;
+          cursor: pointer;
+          animation: pulse 2s infinite;
+      }
+  
+      button[type=submit]:hover {
+          background-color: #111;
+      }
+  
+      @keyframes fadeIn {
+          0% {
+              opacity: 0;
+          }
+          100% {
+              opacity: 1;
+          }
+      }
+  
+      @keyframes pulse {
+          0% {
+              transform: scale(1);
+          }
+          50% {
+              transform: scale(1.2);
+          }
+          100% {
+              transform: scale(1);
+          }
+      }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+        <h4><span><img style="width: 30px; height: 30px;" src=" {% static 'images/face-scan.png' %}" alt="" ></span> Face<span>G</span>enuis</h4>
+    </div>
+    <ul class="nav-links">
+        <li class="home"><a href=" ">Home</a></li>
+        <li class="about"><a href="#">About</a></li>
+    </ul>
+    <div class="burger">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+    </div>
+  </nav>
+
+  <div class="container">
+      {% block content %}
+      <h2>Login</h2>
+      <form method="post" action="">
+          {% csrf_token %}
+          {% for field in form %}
+              <p>
+                  {{ field.label_tag }}<br>
+                  {{ field }}
+                  {% if field.help_text %}
+                      <small style="color: grey">{{ field.help_text }}</small>
+                  {% endif %}
+                  {% for error in field.errors %}
+                      <p style="color: red">{{ error }}</p>
+                  {% endfor %}
+              </p>
+          {% endfor %}
+          <button type="submit">Login</button>
+          {% load socialaccount %}
+
+          {% if google_app_id and google_app_key %}
+            <a href="{% provider_login_url 'google' %}" class="btn btn-google">
+              <i class="fa fa-google"></i> Sign in with Google
+            </a>
+          {% endif %}
+          
+      </form>
+      <div class="login"><a href="/project_app/reset_password">Forgot password?</a></div>
+      {% endblock %}
+  </div>
+  <script>
+      // Your JavaScript code goes here
+  </script>
+</body>
+
+</html>
