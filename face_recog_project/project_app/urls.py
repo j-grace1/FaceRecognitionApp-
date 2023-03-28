@@ -11,10 +11,6 @@ from django.contrib.auth.views import PasswordResetForm, PasswordResetDoneView
 
 from project_app import views as user_views
 
-
-
-
-
 urlpatterns = [
     path('home/', views.index, name='index'),
     path('image_request', views.image_request, name = "image-request"),

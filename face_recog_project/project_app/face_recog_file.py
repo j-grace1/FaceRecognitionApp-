@@ -6,13 +6,6 @@ import random
 import os
 from os import listdir
 
-
-
-
-
-
-
-
 def recognize():
     # Load the model
     model = load_model('keras_model.h5')
@@ -21,9 +14,6 @@ def recognize():
 #load labels
     with open('labels.txt','r') as f:
         class_names = f.read().split('\n')
-
-
-
 # Create the array of the right shape to feed into the keras model
 # The 'length' or number of images you can put into the array is
 # determined by the first position in the shape tuple, in this case 1.
@@ -41,8 +31,6 @@ def recognize():
                 image_list.append(images)
                 print(images)
     image = Image.open('./project_app/me.jpg')
-
-
     #resize the image to a 224x224 with the same strategy as in TM2:
     #resizing the image to be at least 224x224 and then cropping from the center
     size = (224, 224)
@@ -54,11 +42,6 @@ def recognize():
     normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
 # Load the image into the array
     data[0] = normalized_image_array
-
-
-
-
-
 # run the inference
     prediction = model.predict(data)
 
@@ -78,9 +61,6 @@ def recognize():
         return id_list
     else:
         return(7)
-
-
-      
 
 x = recognize()
 print(x)
